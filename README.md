@@ -1,2 +1,3 @@
-JavaScript学习day01  
+JavaScript学习
 ====  
+day01,使用useScript.html<br>
