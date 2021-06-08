@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>动态加载脚本</title>
+	</head>
+	<body>
+		<script>
+			let script = document.createElement('script');
+			script.src = './js/test04.js';
+			// 不是所有浏览器都支持async属性
+			script.async = false;
+			document.head.appendChild(script);
+		</script>
+	</body>
+</html>

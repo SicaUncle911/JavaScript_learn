@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>引入css的方式</title>
+		<!-- 2、嵌入式
+		 优：能批量修改元素样式，结构样式分离
+		 缺：仅限于本页面使用，不可复用-->
+		<style type="text/css">
+			#box{
+				background-color: aqua;
+				width: 80px;
+				height: 80px;
+			}
+		</style>
+		<!-- 3、引入式
+		 优：能复用样式表，单独的css文件易于管理，结构样式完全分离
+		 缺：页面先加载html再加载css，会降低页面加载速度-->
+		<style type="text/css">
+			@import url(./css/mystyle2.css);
+		</style>
+		<!-- 4、链接式 
+		优：能复用样式表，单独的css文件易于管理，结构样式完全分离，加载页面之前装载样式
+		缺：样式优先级最低，容易被其他三种样式覆盖-->
+		<link href="./css/mystyle.css" rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+		<!-- 1、行内引入
+		 优：方便编写，能快速修改指定元素的样式
+		 缺：不利于样式管理和批量修改样式，没有样式结构分离-->
+		<div style="background-color: blue;width: 100px;height: 100px;">
+			<div id="box">
+				<div id="box2">
+					<div id="box3">
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

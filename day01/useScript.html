@@ -2,35 +2,44 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>script标签的使用位置</title>
+		<title>script标签的使用及脚本执行</title>
+		<!-- 1、head标签中引入外部JavaScript代码 -->
 		
-		<!-- 4、将JavaScript文件放在head标签使用,使用defer属性推迟执行脚本 -->
+		<!-- defer属性延迟脚本执行，只适用于外部脚本 -->
+		<!-- 该js代码的加载和后续元素的加载过程并行进行，
+		 但执行是在整个文档渲染完毕，DOMContentLoaded事件之前按顺序执行-->
+		<script defer src = './js/test01.js'></script>
 		<script defer src = './js/test03.js'></script>
+		
+		<!-- async属性异步执行脚本，只适用于外部脚本 -->
+		<!-- 该js代码的加载与执行和后续元素加载与执行异步进行，不保证执行次序 -->
+		<script async src="./js/test01.js"></script>
+		<script async src="./js/test03.js"></script>
 	</head>
 	<body>
-		<p>hello world!</p>
+		<h1>hello world.</h1>
 		
-		<!-- 1、直接在网页嵌入JavaScript代码 -->
+		<!-- 2、使用外部文件中的JavaScript代码 -->
+		<script src="js/test02.js"></script>
+		
+		<!-- 3、行内嵌入JavaScript代码 -->
 		<script>
-			(function method1(){
-				console.log('我是嵌入行内的JavaScript代码,<\/script>');
+			(method3 =>{
+				console.log('我是行内嵌入JavaScript代码');
 			})();
 		</script>
 		
-		<!-- 2、网页中使用外部文件的JavaScript -->
-		<script src = './js/test01.js'></script>
-		
-		<!-- 3、两种方式同时使用，则执行外部脚本文件，忽略行内代码 -->
-		<script src = './js/test01.js'>
-			(method3 => {
-				console.log('我是行内JavaScript代码');
+		<!-- 4、外部JavaScript代码及行内嵌入同时使用只执行外部JavaScript代码 -->
+		<script src="js/test02.js">
+			(method4 =>{
+				console.log('我也是行内嵌入JavaScript代码');
 			})();
 		</script>
 	</body>
 </html>
-<!-- 5、html标签外也可使用 -->
+<!-- 5、html标签外使用JavaScript代码 -->
 <script>
-	(method5 => {
+	(method5 =>{
 		console.log('我是html标签外的JavaScript代码');
 	})();
 </script>
