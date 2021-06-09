@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>三种变量声明</title>
+	</head>
+	<body>
+		<h1>var/let/const区别</h1>
+		<h2>var</h2>
+		<p>
+			1、var声明的变量没有块作用域的概念，仅有函数作用域及全局作用域；<br>
+			2、var声明的变量在函数作用域中外部不可访问，但块级作用域中外部可访问；<br>
+			3、var声明变量会有变量声明提升，将声明拿到作用域顶部，注意赋值不会提升；<br>
+			4、var声明变量可重复声明同一变量。
+		</p>
+		<h2>let</h2>
+		<p>
+			1、与var相似，但作用域是块级作用域，声明的变量仅可在本块访问；<br>
+			2、let声明变量没有声明提升，因此不能在未定义该变量之前使用该变量而存在暂时性死区；<br>
+			3、let声明变量不可重复声明。
+		</p>
+		<h2>const</h2>
+		<p>
+			1、const与let都是块级作用域，块级作用域外无法访问该关键字声明的变量；<br>
+			2、const声明时必须初始化值，且该值不会再被改变；<br>
+			3、const若声明的是对象，对象的属性值可以改变；<br>
+			4、const声明变量没有声明提升，因此不能在未定义该变量之前使用该变量；<br>
+			5、const声明变量不可重复声明。
+		</p>
+		
+		<script type="text/javascript">
+			// var的重复声明
+			var a = 1;
+			var a = 2;
+			console.log(a); // 2
+			
+			// var的声明提升
+			console.log(b); //undefined,赋值未提升
+			var b = 1;
+			console.log(b); // 1
+			
+			// var的作用域
+			var c1 = 10;
+			// console.log(c2); // 报错c2未定义
+			{
+				var c3 = 20;
+			}
+			console.log(c3); // 20
+			(function variableVar(){
+				var c2 = 10;
+				console.log(c1); // 10
+				return c2;
+			})();
+			
+			// let的重复声明
+			let a1;
+			// let a1 = 10; // 报错：a1已经被声明
+			
+			// let无声明提升
+			// console.log(b1); // 报错：不能在声明之前使用
+			let b1 = 15;
+			
+			// let作用域
+			{
+				let b2 = 13;
+				{
+					let b3 = 14;
+					console.log(b3); // 14
+				}
+			}
+			// console.log(b2); //报错：b2没有被定义
+			
+			// let声明迭代变量
+			for( let i = 0; i < 5; i++){
+				setTimeout(()=>console.log(i),0)
+			} // 0、1、2、3、4
+			
+			// const声明时必须初始化值
+			// const d1; //报错：没有初始化
+			const d2 = 9;
+			console.log(d2)  // 9
+			
+			// const声明初始化后不能改变值,但能改变对象属性值
+			const d3=1;
+			// d3=2; // 报错
+			const d4 = new Object();
+			d4.name = 'sica';
+			console.log(d4.name);
+			
+			// const不能重复声明
+			const d5=1;
+			// const d5=2;
+			
+			// const没有声明提升
+			// console.log(d6);
+			const d6 = 12;
+			
+			// const作用域
+			if(true){
+				const d7=1;
+			}
+			// console.log(d7);
+		</script>
+	</body>
+</html>

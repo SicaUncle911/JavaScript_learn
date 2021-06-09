@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>js常见数据类型</title>
+	</head>
+	<body>
+		<h1>原始数据类型</h1>
+		<h2>Undefined</h2>
+		<p>
+			意为未定义，仅有一个值undefined，且是一个假值，在var及let声明未初始化值时则自动赋值undefined。<br>
+			使用typeof无法区分是声明了变量但没初始化值还是没有声明变量但使用typeof检测类型，因为它们都会返回undefined。
+		</p>
+		<h2>Null</h2>
+		<p>
+			意为空，仅有一个值null，且是一个假值，表示一个空指针对象。<br>
+			当某变量需要保存对象但目前没对象保存 就可用null填充。
+		</p>
+		<h2>Boolean</h2>
+		<p>
+			拥有字面值true和false，可用Boolean()函数将其他数据类型转换为Boolean型，if语句的条件判断自动转换Boolean型。
+		</p>
+		<h2>Number</h2>
+		<p>
+			Number类型的字面值有整数值和浮点值以及NaN，超出范围用Infinity和-Infinity表无穷。
+		</p>
+		<h2>String</h2>
+		<p>
+			表示0或多个16位Unicode字符序列。
+		</p>
+		<h2>Symbol</h2>
+		<p>
+			值是唯一不可变的符号，作用是确保对象属性使用唯一标识符。
+		</p>
+		
+		<h1>复杂数据类型</h1>
+		<h2>Object</h2>
+		<p>
+			一组数据和功能的集合，通过new 对象名创建。使用instanceof判定
+		</p>
+		
+		<script type="text/javascript">
+			// Undefined检测
+			let a1;
+			// let a2;
+			console.log(typeof a1); //undefined
+			console.log(typeof a2); //undefined
+			
+			let a3;
+			if(a3){
+				console.log('这里不会执行。')
+			}
+			if(!a3){
+				console.log('这里会执行。')
+			}
+			
+			//Null检测
+			let b1 = null;
+			console.log(typeof b1); // Object
+			
+			//Boolean转换
+			console.log(Boolean('sica')); //true
+			console.log(Boolean('')); //false
+			console.log(Boolean(Infinity)); //true
+			console.log(Boolean(NaN)); //false
+			console.log(Boolean(Object)); //true
+			console.log(Boolean(null)); //false
+			console.log(Boolean(undefined)); //false
+			
+			//Number转换
+			console.log(Number('sica')); //NaN
+			console.log(Number('')); //0
+			console.log(Number(00110)); //72,八进制转十进制
+			console.log(Number('00110')); //110
+			console.log(Number(false)); //0
+			console.log(Number(null)); //0
+			
+			//toString转换，null和undefined无toString方法
+			let c1 = null;
+			let c2;
+			let c3 = 20;
+			// console.log(c1.toString()); 
+			// console.log(c2.toString()); 
+			console.log(typeof(c3.toString())); //string
+			console.log(c3.toString(2)); //10100
+			
+			//不确定null或undefined时可使用String()
+			console.log(typeof String(c1)); //string
+			console.log(String(c2)); //undefined
+			console.log(String(c3)); //20
+			
+			//复杂数据类型判断
+			var arr = []
+			console.log(arr instanceof Array) // true
+			console.log(typeof arr) // object, typeof 是无法判断是否为数组的
+
+		</script>
+	</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>作用域及作用域链</title>
+	</head>
+	<body>
+		<p>
+			执行上下文：代码的执行环境，变量和函数的作用域决定了它们可以访问哪些数据，每一个上下文关联一个变量对象，<br>
+			该上下文定义的所有变量、函数都存在于此对象上。<br>
+			最外层的上下文为全局上下文，也就是window对象。
+		</p>
+		<p>
+			作用域分为全局作用域、函数作用域（局部作用域）、块级作用域，表示变量使用的范围，作用是隔离变量，使得不同作用域的同名变量不会冲突。<br>
+		</p>
+		<p>
+			作用域链：上下文的代码在执行时会创建变量对象的作用域链。<br>
+			<p style="color: #FF0000;">上下文->变量对象（存在所有变量和函数）->作用域链->决定访问变量和函数的顺序</p>
+			作用域链决定上下文代码访问变量、函数时的顺序。<br>
+			个人理解应该是在访问变量时，在该作用域寻找变量，若没有则到父级作用域寻找，直到全局作用域。这样一种层级关系为作用域链。<br>
+			正在执行的变量对象始终位于作用域链最前端。
+		</p>
+		
+		<script>
+			// 内层函数可以通过作用域链访问所有外层直到全局作用域，但外层不能访问内层函数的任何变量和函数。
+			var n = 10;
+			function outer(){
+				function inner(){
+					function center(){
+						console.log(n);
+					}
+					center();
+				}
+				inner();
+				var n = 15; // 此处声明提升，n先被初始化为undefined
+			}
+			outer(); // undefined
+			
+			// 块级作用域同上
+			let m1 = 99;
+			if(true){
+				let m2 = 88;
+				console.log(m1);
+			}
+			// console.log(m2); // 报错，未定义
+			
+			 var a = 1;
+			 function foo() {
+			   console.log(a);
+			 }
+			 function bar() {
+			   var a = 2;
+			   foo();
+			 }
+			 bar(); // 1？why
+			 
+			 //作用域链，执行useName1时，将活动对象置于作用域链最前面，然后是useName对象，直到全局对象，查询标识符name因此打印sica3
+			 //执行useName2时，将useName2创建对象置于作用域链最前，其次是useNmae对象，直到全局对象，useName2搜索不到name标识符，则到useName对象，打印sica2
+			 name='sica1';
+			 function useName(){
+			     var name='sica2';
+			     function useName1(){
+			         var name='sica3';
+			         console.log(name);
+			     }
+			     function useName2(){
+			         console.log(name);
+			     }
+			     useName1();
+			     useName2();
+			 }
+			 useName();
+		</script>
+	</body>
+</html>

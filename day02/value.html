@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>原始值和引用值</title>
+	</head>
+	<body>
+		<h1>原始值</h1>
+		<p>
+			简单数据，包括Undefined、Null、Boolean、Number、String、Symbol。保存原始值的变量按值访问，操作的是数据。
+		</p>
+		<h1>引用值</h1>
+		<p>
+			保存于内存中的对象，由多个值构成，保存引用值的变量按引用访问，操作的是该对象的引用，不能直接操作内存空间。<br>
+			引用值可随时添加、修改、删除属性和方法。
+		</p>
+		
+		<script type="text/javascript">
+			//引用值的动态属性
+			let person1 = new Object();
+			let person2 = 'sicawang';
+			person1.name = 'sica';
+			person1.age = 18;
+			person2.age = 23;
+			console.log(person1.name); //sica 
+			console.log(person2.name); //Undefined
+			console.log(person1.age); //18
+			console.log(person2.age); //Undefined
+			
+			//复制值，原始值复制的是副本，复制的值和原值各自独立；引用值复制的是指针，指向堆内存的对象，因此一个对象的改变会在另一个对象体现。
+			let a = 1;
+			let b = a;
+			b += 5;
+			console.log(a); // 1
+			console.log(b); // 6
+			
+			let obj1 = new Object();
+			let obj2 = obj1;
+			obj1.name = 'David';
+			console.log(obj2.name); // David
+			
+			//传递参数，传参只按值传参
+			function addTen(num){
+				num += 10;
+				return num;
+			}
+			let count = 20;
+			let result = addTen(count);
+			console.log(count); // 20
+			console.log(result); // 30,num为函数的局部变量，与count毫不相关，只是将count的值复制给num
+			
+			function setName(obj){
+				obj.name = 'sica';
+				obj = new Object();
+				obj.name = 'taylor';
+			}
+			let person = new Object();
+			setName(person);
+			console.log(person.name);
+			
+			//确定类型,原始值用typeof，引用值用instanceof确定对象类型
+			let colors = new Array();
+			let pattern = new RegExp();
+			console.log(person instanceof Object);
+			console.log(colors instanceof Array);
+			console.log(pattern instanceof RegExp);
+			
+		</script>
+	</body>
+</html>
