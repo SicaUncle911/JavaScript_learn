@@ -44,15 +44,25 @@
 			}
 			// console.log(m2); // 报错，未定义
 			
-			 var a = 1;
+			 let a = 1;
 			 function foo() {
 			   console.log(a);
 			 }
 			 function bar() {
-			   var a = 2;
+			   let a = 2;
 			   foo();
 			 }
-			 bar(); // 1？why
+			 bar(); // 1，因为函数foo是在全局上下文中，在这个作用域链上查找a找到的是全局变量a
+			 
+			 let b = 1;
+			 function bar2() {
+			   let b = 2;
+			   function foo2() {
+			     console.log(b);
+			   }
+			   foo2();
+			 }
+			 bar2(); // 2，此处函数foo2是在函数bar2的执行上下文中，所以打印同在此上下文的b
 			 
 			 //作用域链，执行useName1时，将活动对象置于作用域链最前面，然后是useName对象，直到全局对象，查询标识符name因此打印sica3
 			 //执行useName2时，将useName2创建对象置于作用域链最前，其次是useNmae对象，直到全局对象，useName2搜索不到name标识符，则到useName对象，打印sica2
