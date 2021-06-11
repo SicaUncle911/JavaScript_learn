@@ -9,4 +9,11 @@ day02<br>
   declaration.html:var/let/const三种声明<br>
   jsDataType.html:常见数据类型<br>
   scope.html：作用域及作用域链<br>
-  value.html：原始值和引用值
+  value.html：原始值和引用值<br>
+
+day03<br>
+  date.html:基本引用类型Date<br>
+  RegExp.html:基本引用类型RegExp<br>
+  number.html：基本引用类型的原始值包装类型Number<br>
+  boolean.html：基本引用类型的原始值包装类型Boolean<br>
+  string.html：基本引用类型的原始值包装类型String<br>
