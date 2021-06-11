@@ -36,7 +36,11 @@
 		<h1>复杂数据类型</h1>
 		<h2>Object</h2>
 		<p>
-			一组数据和功能的集合，通过new 对象名创建。使用instanceof判定
+			一组数据和功能的集合，通过new 对象名创建。<br>
+			判断方法：
+				instanceof：可判定是否为自己指定的复杂数据类型，返回布尔值；<br>
+				constructor：判断属于哪一种复杂数据类型；<br>
+				Object.prototype上的原生toString()方法：对象的引用使用该方法可返回类型，对基本数据类型也适用，不能准确判断自定义类型。
 		</p>
 		
 		<script type="text/javascript">
@@ -90,10 +94,29 @@
 			console.log(String(c3)); //20
 			
 			//复杂数据类型判断
-			var arr = []
-			console.log(arr instanceof Array) // true
-			console.log(typeof arr) // object, typeof 是无法判断是否为数组的
-
+			let num = 10;
+			let arr = [];
+			let obj = {};
+			let dateObj = new Date();
+			let stringObj = new String('damn');
+			//自定义类型
+			function Person(name,age){
+				this.name = name;
+				this.age = age;
+			}
+			let person = new Person('sica',23);
+			
+			console.log(arr instanceof Array); // true
+			console.log(typeof arr); // object, typeof 是无法判断是否为数组的
+			
+			console.log(arr.constructor); //ƒ Array() { [native code] }
+			console.log(dateObj.constructor); //ƒ Date() { [native code] }
+			console.log(stringObj.constructor); //ƒ String() { [native code] }
+			
+			console.log(Object.prototype.toString.call(arr)); //[object Array]
+			console.log(Object.prototype.toString.call(stringObj)); //[object String]
+			console.log(Object.prototype.toString.call(person)); //[object Object],无法准确判断为Person
+			console.log(Object.prototype.toString.call(num)); //[object Number],不好区分是原始数据类型还是基本引用数据类型的实例
 		</script>
 	</body>
 </html>
