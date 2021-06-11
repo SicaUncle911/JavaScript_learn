@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>原始值包装类型string</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			// 创建
+			let strObj = new String('sica');
+			
+			// 返回给定索引字符
+			console.log(strObj.charAt(2)); //c
+			
+			// 返回给定索引编码(十进制)
+			console.log(strObj.charCodeAt(2).toString(16));
+			
+			// 特殊字符在16位基础上使用另外16位增加了一个增补平面,相当于两个字符长度
+			let str2 = 'sica😊uncle';
+			console.log(str2.length); //11
+			console.log(str2.charCodeAt(4)); //55357
+			console.log(str2.charCodeAt(5)); //56842
+			console.log(String.fromCharCode(55357,56842));
+			
+			// ！！！拼接字符串的方法：concat()和+
+			let str3 = 'sica';
+			let str4 = ' uncle';
+			let result1 = str3 + str4;
+			let result2 = str3.concat(str4);
+			console.log(result1);
+			console.log(result2);
+			console.log(result1 === result2);
+			console.log(result2.concat(' 911','!'));
+			
+			// 提取字符串方法：
+			//slice(提取的开始索引，结束索引),可用于数组
+			//substring(提取的开始索引，结束索引)
+			//substr(提取的开始索引，提取数量)
+			console.log(result2.slice(2,6)); //ca u
+			console.log(result2.substring(2,7)); //ca un
+			console.log(result2.substr(2,6)); //ca unc
+			
+			// 获取字符串位置
+			console.log(result2.indexOf('c')); //2
+			console.log(result2.lastIndexOf('c')); //7
+			console.log(result2.search('c')); //匹配方法，查找字符串，返回索引，索引为2
+			
+			// 字符串包含
+			console.log(result2.startsWith('s')); //true,检查第一个字符
+			console.log(result2.endsWith('x')); //false，检查最后一个字符
+			console.log(result2.includes('c')); //true,检查整个字符串
+			console.log(result2.match('c')); //匹配方法，找到满足条件的第一个字符，返回数组
+			
+			// 删除字符串前后空格，对原字符串无影响
+			let str5 = '  ha   haha   ';
+			console.log(str5.trim()); //ha   haha
+			console.log(str5.trimLeft()); //ha   haha   
+			console.log(str5); //  ha   haha   
+			
+			// 复制字符串并拼接
+			console.log(result2.repeat(5)); //单纯复制后拼接在字符串后，不影响原字符串
+			console.log(result2.padStart(20,'*'));
+			console.log(result2.padEnd(20,'*'));
+			
+			// 迭代与解构
+			for (const str6 of 'a5de8'){
+				console.log(str6)
+			} //迭代访问每个字符
+			console.log([...result2]); //解构分割为数组
+			
+			// 匹配方法，除search()、match()，还有replace()
+			// replace()参数有两个，第一个参数可是字符串或正则对象，第二个参数是字符串或函数
+			console.log(result2.replace('uncle','wang'));
+			console.log(result2.replace(/uncle/g,'wang'));
+			console.log(result2); //sica uncle ,不影响原字符串
+			
+			// 比较字符串，localCompare(),从左至右比较对应索引字符
+			console.log(result2.localeCompare('aaa')); //1
+			console.log(result2.localeCompare('ttt')); //-1
+			console.log(result2.localeCompare('sss')); //-1
+			console.log(result2.localeCompare('sica uncle')); //0
+		</script>
+	</body>
+</html>

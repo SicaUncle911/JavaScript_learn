@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>基本引用类型RegExp</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			const pattern = /sica/ig;
+			
+			let str = 'I am sica,and i like sing.Please remember Sica.';
+			console.log(str.split(pattern));  //以匹配位置划分数组元素
+			console.log(str.match(pattern));  //获取匹配的组成数组
+			console.log(str.search(pattern)); //获取第一个匹配的索引值
+			console.log(str.replace(pattern,'Taylor'));
+			
+			// 基于已有实例修改标记
+			const pattern2 = new RegExp(pattern,'g');
+			console.log(pattern2);
+			
+			// RegExp实例属性
+			console.log(pattern.global); //true
+			console.log(pattern.ignoreCase); //true
+			console.log(pattern.lastIndex); //0
+			console.log(pattern.flags); //gi
+			console.log(pattern.source); // sica
+			
+			// RegExp实例方法：exec()，找到第一个匹配信息则返回
+			let str2 = 'aaabcccba';
+			const pattern3 = /abc/g
+			let matches = pattern3.exec(str2);
+			console.log(matches); 
+			console.log(matches[0]); // abc
+			
+			//test()方法与构造函数属性
+			let str3 = '唉，没有a想真b的躺平啊。'
+			const pattern4 = /[a-b]+/g;
+			let matches2 = pattern4.test(str3); //检测正则式中是否能在字符串中匹配到，返回布尔值
+			console.log(matches2);
+			if(matches2){
+				console.log(RegExp.input); //最后搜索的字符串
+				console.log(str3.match(pattern4));
+				console.log(RegExp.leftContext); //基于最后一个匹配的前面
+				console.log(RegExp.rightContext); //基于最后一个匹配的后面
+				console.log(RegExp.lastMatch); // 最后一个匹配的：b
+				console.log(RegExp.lastParen); // 空，无捕获组，捕获组是将正则式用括号进行分组
+			}
+		</script>
+	</body>
+</html>

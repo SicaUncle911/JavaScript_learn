@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>基本引用类型Date</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			// Date.parse()创建具体日期对象，字符串格式正确，则可省略Date.parse()方法
+			// 日期字符串格式：
+			//	'month/day/year',
+			//	'monthName,day,year',
+			//	'week monthName day year hour:minute:second:timeZone',
+			//	'YYYY-MM-DDTHH:mm:ss:sssZ'
+			let someDate1 = new Date(Date.parse('June 20,2021'));
+			let someDate2 = new Date('6/10/2021');
+			console.log(someDate1);
+			console.log(someDate2);
+			
+			// Date.UTC()创建具体本地日期对象
+			// 日期字符串格式：year,month(从0开始),day,hour,minute,second
+			let someDate3 = new Date(Date.UTC(2021,5,9,21,27,50));
+			console.log(someDate3); //Thu Jun 10 2021 05:27:50 GMT+0800 why?
+			console.log(someDate3.toString());
+			console.log(someDate3.toLocaleString());
+			
+			// 执行时日期时间毫秒数
+			console.log(Date.now())
+			
+			// 日期格式化
+			console.log(someDate2.toDateString());
+			console.log(someDate2.toTimeString());
+			console.log(someDate2.toUTCString());
+		</script>
+	</body>
+</html>
