@@ -24,7 +24,7 @@
 		<p>
 			1、自执行函数，只调用一次的函数创建匿名函数后立即执行，执行完后立即释放，不会污染全局变量。<br>
 			2、封装，函数外使用函数内的变量，以函数作为返回值。<br>
-			3、
+			3、缓存，由于闭包不会释放对外部的引用，因此函数内部的值可得以保留。<br>
 		</p>
 		
 		<script type="text/javascript">
@@ -42,7 +42,7 @@
 				}
 			}
 			let foo = bar();
-			foo();
+			foo(); //100
 			
 			let person = function(){      
 				let name = 'sica';
@@ -75,6 +75,10 @@
 			let Sica = Person('sica');
 			console.log(Sica.getName()); //sica
 			console.log(Sica.setName('avril')); //avril
+			
+			
+			//缓存
+			
 		</script>
 	</body>
 </html>

@@ -23,6 +23,7 @@
 				let a = 20;
 				function foo(){
 					// this.a = a;
+					let a = 30;
 					console.log(this.a); //undefined，函数foo的执行上下文a是未定义的
 				};
 				foo();
@@ -30,7 +31,7 @@
 			bar();
 			
 			//全局函数中调用
-			//在ES6中,全局变量不属于顶层对象window的属性了
+			//在ES6中,let\const声明的全局变量不属于顶层对象window的属性了
 			let b1 = 10;
 			function bar1(){
 				let b1 = 20;
