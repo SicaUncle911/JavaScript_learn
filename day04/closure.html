@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>闭包原理及其作用</title>
+	</head>
+	<body>
+		<h2>闭包概念</h2>
+		<p>
+			闭包不是单纯的匿名函数，而是引用了另一个函数作用域中变量的函数，出现在函数嵌套中。<br>
+		</p>
+		
+		<h2>闭包原理</h2>
+		<p>
+			涉及到作用域链，在代码执行时，当前执行上下文的变量对象始终处于作用域链的最前端；<br>
+			更严谨说，全局上下文的变量对象叫变量对象，函数的局部上下文叫活动对象。<br>
+			在定义某个函数时，会预装载其父级作用域的变量对象放置到创建的作用域链中，<br>
+			在调用此函数时创建执行上下文，接着创建函数活动对象，推入到作用域链最前端。<br>
+			由于作用域链，函数内部声明的变量是局部的，只能在函数内部访问到，但是函数外部的变量在内部函数执行上下文的作用域链中，因此可引用外部函数变量。<br>
+			但是闭包也会造成外部函数执行完毕其活动对象迟迟无法被销毁回收内存，因为内部函数对其一直引用，直到内部函数被销毁。<br>
+		</p>
+		
+		<h2>闭包作用</h2>
+		<p>
+			1、自执行函数，只调用一次的函数创建匿名函数后立即执行，执行完后立即释放，不会污染全局变量。<br>
+			2、封装，函数外使用函数内的变量，以函数作为返回值。<br>
+			3、
+		</p>
+		
+		<script type="text/javascript">
+			//自执行函数
+			(function(a){
+				console.log(a);
+			})(233) //233
+			
+			//封装
+			let b = 200;
+			function bar(){
+				let b = 100;
+				return function(){
+					console.log(b);
+				}
+			}
+			let foo = bar();
+			foo();
+			
+			let person = function(){      
+				let name = 'sica';
+				return {
+					getName : function(){
+						return name;
+					},
+					setName : function(newName){
+						name = newName;
+						return name;
+					}
+				}
+			}();
+			console.log(person.name); //直接访问，结果为undefined
+			console.log(person.getName()); //sica
+			console.log(person.setName('taylor')); //taylor
+		
+			function Person(name){
+				// let name = 'sica';
+				return {
+					getName : function(){
+						return name;
+					},
+					setName : function(newName){
+						name = newName;
+						return name;
+					}
+				}
+			}
+			let Sica = Person('sica');
+			console.log(Sica.getName()); //sica
+			console.log(Sica.setName('avril')); //avril
+		</script>
+	</body>
+</html>

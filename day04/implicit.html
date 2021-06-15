@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>隐式的（JS自动转换）数据格式转换</title>
+		<style>
+			table{
+				text-align:center;
+				border-collapse: collapse;
+			}
+			table, tr, td {
+			  border: 1px solid black;
+			}
+			#title{
+				font-weight:bolder;
+			}
+			#boolTable{
+				font-weight:bolder;
+				background: #87CEFA;
+			}
+		</style>
+	</head>
+	<body>
+		<h2>递增/递减操作符</h2>
+		<p>
+			++、--递增/递减操作符用于数值型数据的自加一、减一操作，有前缀版和后缀版，<br>
+			但JS的递增/递减操作符不仅限于用于整数，还可用于浮点数、字符串、布尔值、对象，此时伴随隐式的数据格式转换，像Number()一样转换为数值型数据；<br>	
+		</p>
+		<table>
+			<tr>
+				<td colspan = '3' id = 'boolTable'>递增/递减操作符隐式转换数据格式</td>
+			</tr>
+			<tr>
+				<td id = 'title'>类型</td>
+				<td id = 'title'>参数</td>
+				<td id = 'title'>前缀版++转换</td>
+			</tr>
+			<tr>
+				<td rowspan = '4'>String</td>
+			</tr>
+			<tr>
+				<td>整数形式字符串'2'</td>
+				<td>3</td>
+			</tr>
+			<tr>
+				<td>浮点数形式字符串'3.14'</td>
+				<td>4.140000000000001（浮点数不精确）</td>
+			</tr>
+			<tr>
+				<td>无数字字符串'sica'</td>
+				<td>NaN</td>
+			</tr>
+			<tr>
+				<td rowspan = '3'>Boolean</td>
+			</tr>
+			<tr>
+				<td>true</td>
+				<td>2</td>
+			</tr>
+			<tr>
+				<td>false</td>
+				<td>1</td>
+			</tr>
+			<tr>
+				<td>浮点数</td>
+				<td>2.3</td>
+				<td>3.3</td>
+			</tr>
+			<tr>
+				<td>Undefined</td>
+				<td>undefined</td>
+				<td>NaN</td>
+			</tr>
+			<tr>
+				<td>Null</td>
+				<td>null</td>
+				<td>1</td>
+			</tr>
+			<tr>
+				<td>Object</td>
+				<td>obj = {valueOf(){return 2}}</td>
+				<td>3</td>
+			</tr>
+		</table>
+		
+		<h2>一元加减操作符</h2>
+		<p>
+			将一元加减操作符应用到非数值，则会伴随隐式数据格式转换，像Number()一样转换为数值型数据。<br>
+			此外，在一元加操作符遇到含字符串的加减（字符串不放于变量中），不进行转换，而是进行字符串连接。<br>
+		</p>
+		
+		<h2>布尔操作符</h2>
+		<p>
+			布尔操作符有逻辑与、逻辑或、逻辑非；布尔操作符会将操作数隐式转换为布尔值；<br>
+			1、逻辑与有两个操作数，若操作数不是布尔值，则不一定返回布尔值。有短路特性，第一个操作数若决定了结果（false），则不会对第二个操作数求值<br>
+			2、逻辑或有两个操作数，若操作数不是布尔值，则不一定返回布尔值。有短路特性，第一个操作数若决定了结果（true），则不会对第二个操作数求值<br>
+			3、逻辑非会将操作数隐式转换为布尔值并求反，使用!!可达到Boolean()的效果；<br>
+		</p>
+		
+		<h2>关系操作符</h2>
+		<p>
+			结果只返回布尔值，关系操作符在遇到不同数据类型时会发生类型转换，转换为数值型数据；<br>
+			1、若任一操作数是数值，则将另一个操作数转换为数值比较；<br>
+			2、若任一操作数是对象，则对象调用valueOf()或toString()取得结果再比较；<br>
+			3、若任一操作数是布尔值，则将其转换为数值后比较；<br>
+			4、若两个操作数都为字符串，则逐个比较字符的ASCII码。<br>
+		</p>
+		
+		<h2>等于和不等于（==/!=）</h2>
+		<p>
+			结果只返回布尔值，在遇到不同数据类型时会发生强制类型转换；<br>
+			1、若任一操作数是布尔值，会将布尔值转换为数值后比较；<br>
+			2、若任一操作数是字符串，另一操作数是数值，则尝试将字符串转换为数值后比较；<br>
+			3、若任一操作数是对象，则对象调用valueOf()取得结果再比较；<br>
+			4、若两个操作数都为对象，则比较是不是同一个对象；<br>
+			5、null和undefined不再进行数据转换，null和undefined相等，和其他类型等于比较返回false；<br>
+			6、NaN和任何类型等于比较都为false，包括NaN与NaN比较；<br>		
+		</p>
+		
+		<h2>流控制语句if、while、do-while转换为布尔型</h2>
+		<p>
+			流控制语句会将条件隐式转换为Boolean型，效果如同Boolean()函数，只返回布尔值
+		</p>
+		
+		<h2>字符串插值${}</h2>
+		<p>
+			会将{}内容调用toString转换为字符型
+		</p>
+		
+		<script type="text/javascript">
+			//递增/递减操作符
+				//有效数值字符串
+				console.log('递增递减操作符******************************');
+				let numStr = '23';
+				console.log('字符串23：' + ++numStr); //24；后缀版是23，先打印再加一
+				
+				//非数值字符串
+				let str = 'sica911';
+				console.log('字符串sica911：' + str++); //NaN
+				
+				//布尔值
+				let bol = true;
+				console.log('布尔值true：' + bol++); //1
+				console.log(bol); //2
+				
+				//浮点数
+				let floatNum = 3.14;
+				console.log('浮点数3.14：' + ++floatNum); //4.140000000000001，浮点数不精确
+				
+				//无穷数
+				let infinity = Infinity;
+				console.log('无穷数：' + ++Infinity); //infinity
+				
+				//null
+				let nul = null;
+				console.log('空指针对象：' + ++nul); //1
+				
+				//undefined
+				let und;
+				console.log('undefined：' + ++und); //NaN
+				
+				//对象
+				let obj = {valueOf(){return 2}};
+				console.log('obj：' + ++obj); //3
+				
+				let obj2 = {name:'sica',age:18};
+				console.log('obj：' + ++obj2); //NaN
+				
+			//一元加减操作符
+				console.log('一元加减操作符******************************');
+				//一元加
+				let s1 = '001';
+				let s2 = '1.1';
+				let s3 = 'avril';
+				let b = true;
+				let f = 1.1;
+				let u;
+				let n = null;
+				let o = {valueOf(){return 3}};
+				
+				console.log(s1 = + s1); //1
+				console.log(s2 = + s2); //1.1
+				console.log(s3 = + s3); //NaN
+				console.log(b = + b); //1
+				console.log(f = + f); //1.1
+				console.log(u = + u); //NaN
+				console.log(n = + n); //0
+				console.log(o = + o); //3
+				console.log(b + f); //2.1
+				console.log(s1 + s2); //2.1
+				console.log(s1 + s3); //NaN，放于变量中会认为是计算，从而得到NaN
+				console.log(s1 + 'avril'); //'1avril'，字符串未放于变量中会认为是拼接，从而得到'1avril'
+				console.log('avril' + b); //avril1
+				
+				//一元减
+				console.log(s1 = - s1); //-1
+				console.log(s2 = - s2); //-1.1
+				console.log(s3 = - s3); //NaN
+				console.log(b = - b); //-1
+				console.log(f = - f); //-1.1
+				console.log(u = - u); //NaN
+				console.log(n = - n); //-0
+				console.log(o = - o); //-3
+				console.log(s1 - 'avril'); //NaN
+				console.log('avril' - 'il'); //NaN
+				
+			//布尔操作符
+				console.log('布尔操作符******************************');
+				//逻辑与
+				console.log('逻辑与----------');
+				console.log(true && false); //false
+				console.log(o && false); //false，第一个操作数是对象则返回第二个操作数
+				console.log(true && o); //-3，第二个操作数是对象，第一个操作数是true时才返回该对象，否则false
+				console.log(o && {name:'taylor'}); //{name: "taylor"}，两个操作数都是对象时返回第二个对象
+				console.log(null && false); //一个为null则返回null
+				console.log(true && NaN); //一个为NaN则返回NaN
+				console.log(true && undefined); //一个为undefined则返回undefined
+				console.log(true && f); //-1.1，第二个参数为数值型数据，第一个为true时则返回该数值数据
+				console.log(f && true); //true
+				console.log(o && u); //NaN，前面的undefined已经变为NaN
+				console.log(o && null); //null
+				
+				//逻辑或
+				console.log('逻辑或----------');
+				console.log(o || false); //-3，第一个操作数为对象则返回该对象
+				console.log(false || o); //-3，第一个操作数为falsel，则返回第二个操作数
+				console.log(o || {name:'taylor'}); //两个对象返回第一个对象
+				console.log(null || null); //null，两个都为null则为null
+				console.log(null || true); //true
+				console.log(undefined || undefined); //undefined，两个都为undefined则为Undefined
+				
+				//逻辑非
+				console.log('逻辑非----------');
+				console.log(!false); //true
+				console.log(!null); //true
+				console.log(!''); //true
+				console.log(!'cc'); //false
+				console.log(!0); //true
+				console.log(!-10); //false
+				console.log(!Infinity); //false
+				console.log(!NaN); //true
+				console.log(!undefined); //true
+				
+			//关系操作符
+				console.log('关系操作符******************************');
+				console.log(2 < 10); //true
+				console.log('abc' < 'sica'); //true，ASCII码比较
+				console.log(1000 > 'a'); //false，'a'会转换为NaN后无法比较，则false
+				console.log(2 < true); //false
+				console.log(2 < undefined); //true
+				console.log(o < 10); //true
+				
+			//等于/不等于操作符
+				console.log('等于/不等于操作符******************************');
+				console.log(true == 1); //true
+				console.log('97' == 97); //true
+				console.log('a' == 97); //false，a被转换为了NaN
+				console.log('a' == 'a'); //true，ASCII码比较
+				console.log(o == -3); //true
+				console.log(null == undefined); //true
+				console.log(null == 0); //false,null不能再转换
+				console.log(NaN == NaN); //false
+				console.log(NaN != NaN); //true
+		</script>
+	</body>
+</html>

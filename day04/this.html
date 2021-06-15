@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>this的指向问题</title>
+	</head>
+	<body>
+		<h2>内部函数中的this对象</h2>
+		<p>运行时绑定到执行函数的上下文</p>
+		
+		<h2>全局函数中的this对象</h2>
+		<p>非严格模式下为window，严格模式下为undefined</p>
+		
+		<h2>对象中方法的this对象</h2>
+		<p>this绑定到这个对象</p>
+		
+		<h2>对象中匿名函数的this对象</h2>
+		<p>不会绑定到某对象，非严格模式下为window，严格模式下为undefined</p>
+		
+		<script type="text/javascript">
+			//内部函数中的this对象
+			let bar = function(){
+				let a = 20;
+				function foo(){
+					// this.a = a;
+					console.log(this.a); //undefined，函数foo的执行上下文a是未定义的
+				};
+				foo();
+			}
+			bar();
+			
+			//全局函数中调用
+			//在ES6中,全局变量不属于顶层对象window的属性了
+			let b1 = 10;
+			function bar1(){
+				let b1 = 20;
+				console.log(this.b1); //undefined，let声明的变量不是window对象的属性，所以this访问不到
+				console.log(b1); //20
+				console.log(this.b1 + b1); //NaN
+			}
+			bar1();
+			
+			var b2=10;
+			function bar2(){
+				var b2=20;
+				console.log(this.b2); //10，this绑定了window
+				console.log(b2); //20
+				console.log(this.b2 + b2); //30
+			}
+			bar2();
+			
+			//对象中使用this
+			let age=10;
+			let obj={
+				name:'sica',
+				age:23,
+				getName(){
+					console.log(this); //this绑定obj这个对象
+					console.log(this.age); //23
+					console.log(this.name) //sica
+				},
+			}
+			obj.getName();
+			
+			//对象中匿名函数使用this
+			window.name2 = 'Taylor Swift';
+			let obj2={
+				name2:'taylor',
+				getName2(){
+					let that = this;
+					return function(){
+						return this.name2; //Taylor Swift，绑定到了window
+						// return that.name2; //taylor，将对象中方法的函数this指向赋给that，实际指向对象obj2
+					}
+				}
+			}
+			console.log(obj2.getName2()());
+		</script>
+	</body>
+</html>

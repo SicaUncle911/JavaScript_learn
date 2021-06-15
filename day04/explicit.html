@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>显式的（手动调用）数据格式转换</title>
+		<style>
+			table{
+				text-align:center;
+				border-collapse: collapse;
+			}
+			table, tr, td {
+			  border: 1px solid black;
+			}
+			#title{
+				font-weight:bolder;
+			}
+			#boolTable{
+				font-weight:bolder;
+				background: #87CEFA;
+			}
+		</style>
+	</head>
+	<body>
+		<h2>布尔转换</h2>
+		<p>
+			可使用Boolean()转型函数进行数据格式转换；<br>
+			转换后返回的值仅有true、false；<br>
+		</p>
+		<table>
+			<tr>
+				<td colspan = '3' id = 'boolTable'>Boolean()布尔转换表</td>
+			</tr>
+			<tr>
+				<td id = 'title'>类型</td>
+				<td id = 'title'>true的值</td>
+				<td id = 'title'>false的值</td>
+			</tr>
+			<tr>
+				<td>String</td>
+				<td>字符串</td>
+				<td>空字符串</td>
+			</tr>
+			<tr>
+				<td>Number</td>
+				<td>非0数值、无穷Infinity</td>
+				<td>0、NaN</td>
+			</tr>
+			<tr>
+				<td>Undefined</td>
+				<td>-</td>
+				<td>undefined</td>
+			</tr>
+			<tr>
+				<td>Symbol</td>
+				<td>symbol</td>
+				<td>-</td>
+			</tr>
+			<tr>
+				<td>Object</td>
+				<td>对象</td>
+				<td>null</td>
+			</tr>
+		</table>
+		
+		
+		<h2>数值转换</h2>
+		<p>
+			可使用Number()、parseInt()、parseFloat()函数，后两个函数专门用于字符类型数据；<br>
+			parseInt()将带数字字符串转换为十进制整数，可接收第二个参数指定将字符串看作此进制转换为十进制；<br>
+			parseFloat()将带浮点数字符串转换为浮点数，只解析十进制，若字符串是整数也会转换为十进制整数。<br>
+		</p>
+		<table>
+			<tr>
+				<td colspan = '3' id = 'boolTable'>Number()数值转换表</td>
+			</tr>
+			<tr>
+				<td id = 'title'>类型</td>
+				<td id = 'title'>参数</td>
+				<td id = 'title'>转换值</td>
+			</tr>
+			<tr>
+				<td rowspan = '3'>Boolean</td>
+			</tr>
+			<tr>
+				<td>true</td>
+				<td>1</td>
+			</tr>
+			<tr>
+				<td>false</td>
+				<td>0</td>
+			</tr>
+			<tr>
+				<td rowspan = '6'>String</td>
+			</tr>
+			<tr>
+				<td>整数字符串，无其它字符</td>
+				<td>十进制数值</td>
+			</tr>
+			<tr>
+				<td>浮点数字符串，无其它字符</td>
+				<td>对应浮点数</td>
+			</tr>
+			<tr>
+				<td>十六进制字符串，无其它字符</td>
+				<td>十进制整数</td>
+			</tr>
+			<tr>
+				<td>空字符串</td>
+				<td>0</td>
+			</tr>
+			<tr>
+				<td>其他字符串</td>
+				<td>NaN</td>
+			</tr>
+			<tr>
+				<td>Null</td>
+				<td>null</td>
+				<td>0</td>
+			</tr>
+			<tr>
+				<td>Undefined</td>
+				<td>undefined</td>
+				<td>NaN</td>
+			</tr>
+			<tr>
+				<td>Object</td>
+				<td>对象</td>
+				<td>NaN</td>
+			</tr>
+		</table>
+		
+		
+		<h2>字符串转换</h2>
+		<p>
+			可使用toString()、String()函数，此外可给一个值用+加上一个空字符串也可以转换为字符串<br>
+			toString()返回值的字符串等价物，可传参数控制数值的进制转换后字符串，null和undefined没有toString()方法；<br>
+			String()可返回undefined和null字面量文本。<br>
+		</p>
+		<table>
+			<tr>
+				<td colspan = '5' id = 'boolTable'>toString()、String()数值转换表</td>
+			</tr>
+			<tr>
+				<td id = 'title'>类型</td>
+				<td id = 'title'>参数</td>
+				<td id = 'title'>toString()转换值</td>
+				<td id = 'title'>String()转换值</td>
+				<td id = 'title'>+""转换值</td>
+			</tr>
+			<tr>
+				<td>Boolean</td>
+				<td>true/false</td>
+				<td>字符串等价物</td>
+				<td>字符串等价物</td>
+				<td>字符串等价物</td>
+			</tr>
+			<tr>
+				<td>Number</td>
+				<td>true/false</td>
+				<td>字符串等价物，十进制整数可传参得到其他进制的字符串表示</td>
+				<td>字符串等价物</td>
+				<td>字符串等价物</td>
+			</tr>
+			<tr>
+				<td>Undefined</td>
+				<td>undefined</td>
+				<td>报错</td>
+				<td>字符串等价物</td>
+				<td>字符串等价物</td>
+			</tr>
+			<tr>
+				<td>Null</td>
+				<td>null</td>
+				<td>报错</td>
+				<td>字符串等价物</td>
+				<td>字符串等价物</td>
+			</tr>
+			<tr>
+				<td>Symbol</td>
+				<td>Symbol('sica')</td>
+				<td>字符串等价物</td>
+				<td>字符串等价物</td>
+				<td>报错</td>
+			</tr>
+			<tr>
+				<td>Object</td>
+				<td>对象</td>
+				<td>[object Object]</td>
+				<td>[object Object]</td>
+				<td>[object Object]</td>
+			</tr>
+		</table>
+		
+		<script type="text/javascript">
+			// 布尔转换
+			console.log('布尔转换*****************************************');
+				//String
+				console.log('字符串：' + Boolean('sica')); //true
+				console.log('空字符串：' + Boolean('')); //false
+				
+				//Number
+				console.log('非0整数：' + Boolean(10)); //true
+				console.log('非0浮点数：' + Boolean(10.23)); //true
+				console.log('Infinity：' + Boolean(Infinity)); //true
+				console.log('0：' + Boolean(0)); //false
+				console.log('NaN：' + Boolean(NaN)); //false
+				
+				//Undefined
+				console.log('undefined：' + Boolean(undefined)); //false
+				
+				//Object
+				let obj = {};
+				let dateObj = new Date();
+				console.log('Object：' + Boolean(obj)); //true
+				console.log('Date：' + Boolean(dateObj)); //true
+				console.log('null：' + Boolean(null)); //false
+				
+				//Symbol
+				console.log('Symbol：' + Boolean(Symbol('cba'))); //true
+				
+			// 数值转换
+			console.log('数值转换*****************************************');
+			//Number()
+				//Boolean
+				console.log('true：' + Number(true)); //1
+				console.log('false：' + Number(false)); //0
+				
+				//Number
+				console.log('Infinity：' + Number(Infinity)); //Infinity
+				console.log('NaN：' + Number(NaN)); //NaN
+				
+				//String
+				console.log('整数字符串：' + Number('+023e2')); //2300
+				console.log('浮点数字符串：' + Number('02.233')); //2.233
+				console.log('十六进制字符串：' + Number('0xf')); //15,返回十进制
+				console.log('空字符串：' + Number('')); //0
+				console.log('上述情况外，不带数字：' + Number('sica')); //NaN
+				
+				//Symbol
+				// console.log('Symbol：' + Number(Symbol('sica'))); //报错，无法使用该函数
+				
+				//Undefined
+				console.log('undefined：' + Number(undefined)); //NaN
+				
+				//Null
+				console.log('null：' + Number(null)); //0
+				
+				//Object
+				let Avril = {name:'Avril',age:18}
+				console.log('Object：' + Number(Avril.valueOf())); //NaN
+			
+			//parseInt()
+				console.log('0911sica：' + parseInt('0911sica')); //911
+				// console.log('sica911：' + parseInt('sica911')); //NaN,要以数字字符开头
+				console.log('22.53：' + parseInt('22.53')); //22
+				console.log('2e3：' + parseInt('2e3')); //2
+				console.log('0xf：' + parseInt('0xf')); //15
+				console.log('20：' + parseInt('1001', 2)); //9,按二进制解析
+				
+			//parseFloat()
+				console.log('22.3sica：' + parseFloat('22.3sica')); //22.3
+				console.log('22.3e5：' + parseFloat('22.3e5')); //2230000
+				console.log('0xf：' + parseFloat('0xf')); //0
+				console.log('03.16：' + parseFloat('03.16')); //3.16
+				
+			// 字符串转换
+			console.log('字符串转换*****************************************');
+				//toString()
+				let bool = true;
+				let num = 10;
+				let floatNum = 3.14;
+				let info = {country:'China',age:23};
+				console.log('true：' + bool.toString()); //'true'
+				console.log('10：' + num.toString()); //'10'
+				console.log('NaN：' + NaN.toString()); //'NaN'
+				console.log('10-二进制：' + num.toString(2)); //'1010'
+				console.log('10-八进制：' + num.toString(8)); //'12'
+				console.log('浮点数：' + floatNum.toString()); //'3.14'
+				console.log('info.age：' + info.age.toString()); //'23'
+				console.log('info：' + info.toString()); //'[object Object]'
+				// console.log('null：' + null.toString()); //报错
+				// console.log('undefined：' + undefined.toString()); //报错
+				console.log('Symbol：' + Symbol('str').toString()); //'Symbol('str')'
+				//自定义对象使用toString
+				function F (x, y) {  //构造函数
+				    this.x = x;
+				    this.y = y;
+				}
+				let f = new F(1, 2);  //实例化对象
+				console.log(F.toString());  //返回函数的源代码
+				console.log(f.toString());  //'[object Object]'	
+				
+				//String()
+				console.log('null：' + String(null)); //'null'
+				console.log('undefined：' + String(undefined)); //'undefined'
+				console.log('10：' + String(10)); //'10'
+				console.log('浮点数3.14：' + String(floatNum)); //'3.14'
+				console.log('Symbol：' + String(Symbol('str2'))); //'Symbol(str2)'
+				console.log(String(F)); //返回函数的源代码
+				console.log(String(f)); //'[object Object]'	
+				
+				//加空字符串
+				let addNullStr = num + '';
+				let und = undefined + '';
+				let nul = null + '';
+				// let sym = Symbol('sica') + ''; //报错，无法将符号转为字符串
+				console.log(typeof num); //number
+				console.log(typeof addNullStr); //string
+				console.log(typeof und); //string
+				console.log(und); //undefined
+				console.log(typeof nul); //string
+				console.log(nul); //null
+				// console.log(typeof sym);
+				// console.log(sym); //报错
+				console.log(typeof (f + '')); //string
+				console.log(f); //F {x: 1, y: 2}
+				console.log(typeof (F + '')); //string
+				console.log(F); //函数源代码
+		</script>
+	</body>
+</html>
