@@ -5,7 +5,13 @@
 		<title>this的指向问题</title>
 	</head>
 	<body>
-		<h2>内部函数中的this对象</h2>
+		<h2>首先要明白，this指向谁只有在执行时才知道</h2>
+		<p>
+			谁调用this并执行，this就指向谁，this永远指向的是最后调用它的对象；<br>
+			this绑定有显示绑定和隐式绑定，当没明确一个函数的调用对象时，将默认隐式绑定window对象
+		</p>
+		
+		<h2>内部函数中的this对象（嵌套函数）</h2>
 		<p>运行时绑定到执行函数的上下文</p>
 		
 		<h2>全局函数中的this对象</h2>
@@ -16,21 +22,46 @@
 		
 		<h2>对象中匿名函数的this对象</h2>
 		<p>不会绑定到某对象，非严格模式下为window，严格模式下为undefined</p>
+		<p>因为其执行是在全局对象中</p>
+		
+		<h2>构造函数中this指向</h2>
+		<p>this的new绑定，始终指向新创建的实例对象</p>
+		
+		<h2>箭头函数中this对象</h2>
+		<p>剪头函数的this是继承父执行上下文里面的this</p>
+		
+		<h2>class声明中箭头函数的this对象</h2>
+		<p>class创建实例对象中箭头函数改变this指向，class声明中箭头函数this指向创建实例</p>
+		
+		<h2>改变this指向的方法</h2>
+		<ol>
+			<li>with语句改变this指向</li>
+			<li>call()改变this指向，call()提供其他参数的方式直接逗号隔开</li>
+			<li>apply()改变this指向，与call()相似，但提供其他参数是用数组表示</li>
+			<li>bind()改变this指向，bind()返回的是一个新的函数，与被调用函数函数体相同，你必须调用它才会被执行,传参和call()一致</li>
+			<li>将this赋值到变量中使用，算是改变了this指向（let that = this）</li>
+		</ol>
 		
 		<script type="text/javascript">
-			//内部函数中的this对象
+			/**
+			 * 内部函数中的this对象
+			 */
+			var a = 66;
 			let bar = function(){
 				let a = 20;
 				function foo(){
 					// this.a = a;
 					let a = 30;
-					console.log(this.a); //undefined，函数foo的执行上下文a是未定义的
+					console.log(this.a); 
 				};
 				foo();
 			}
-			bar();
+			//foo函数是在bar中调用的，而bar又是全局对象window调用的，因此最后调用对象为window
+			bar(); //66，此处函数执行的上下文是window对象，所以是66
 			
-			//全局函数中调用
+			/**
+			 * 全局函数中调用
+			 */
 			//在ES6中,let\const声明的全局变量不属于顶层对象window的属性了
 			let b1 = 10;
 			function bar1(){
@@ -41,7 +72,7 @@
 			}
 			bar1();
 			
-			var b2=10;
+			var b2 = 10;
 			function bar2(){
 				var b2=20;
 				console.log(this.b2); //10，this绑定了window
@@ -50,12 +81,15 @@
 			}
 			bar2();
 			
-			//对象中使用this
+			/**
+			 * 对象中使用this
+			 */
 			let age=10;
 			let obj={
 				name:'sica',
 				age:23,
-				getName(){
+				getName(a,b){
+					console.log(a + b);
 					console.log(this); //this绑定obj这个对象
 					console.log(this.age); //23
 					console.log(this.name) //sica
@@ -63,19 +97,120 @@
 			}
 			obj.getName();
 			
-			//对象中匿名函数使用this
-			window.name2 = 'Taylor Swift';
+			//将函数赋值给对象属性，函数中this的指向变化
+			var x = 99;
+			var foo3 = function(){
+				console.log(this.x);
+			}
+			foo3(); //99，此时this指向的是window对象
+			var bar3 = {
+				x:999,
+				fn:foo3
+			};
+			bar3.fn(); //999，此时this指向的bar3对象
+			
+			/**
+			 * 匿名函数使用this
+			 */
+			var name2 = 'Taylor Swift';
 			let obj2={
 				name2:'taylor',
+				getName1(){
+					console.log(this.name2);
+				},
 				getName2(){
-					let that = this;
+					let that = this; //this指向对象obj2
 					return function(){
-						return this.name2; //Taylor Swift，绑定到了window
-						// return that.name2; //taylor，将对象中方法的函数this指向赋给that，实际指向对象obj2
+						console.log(this.name2); //Taylor Swift，绑定到了window
+						// console.log(that.name2); //taylor，将对象中方法的函数this指向赋给that，实际指向对象obj2
 					}
 				}
 			}
-			console.log(obj2.getName2()());
+			obj2.getName1(); //taylor ，此处this指向对象obj2
+			obj2.getName2()(); //Taylor Swift ，此处this指向了window
+			//为什么会这样，这是因为getName1是通过对象去调用执行的，所以this指向调用它的对象；
+			//而getName2虽然也是通过obj2对象去调用，但是该对象调用是返回的内部匿名函数，而函数真正执行是在全局对象中执行的。
+			
+			/**
+			 * 构造函数中this指向
+			 */
+			function Person(name,age){
+				this.name = name;
+				this.age = age;
+				console.log(this) // 此处this分别指向Person的实例对象p1、p2
+			}
+			let p1 = new Person('sica',23);
+			let p2 = new Person('jack',23);
+			
+			//箭头函数改变this指向
+			var x = 666;
+			const o = {
+				x:999,
+				par1:1,
+				par2:{
+					x:555,
+					par1:11,
+					fn:function(){
+						let x = 233;
+						console.log(this); //this指向par2这个对象
+						(function(){
+							console.log(this.x);
+						})(); //666，此处指向全局对象window，遵循匿名函数this指向
+						test:(() => {
+							console.log(this.x);
+						})(); //555，此处指向对象par2，剪头函数的this是继承父执行上下文里面的this,此处执行上下文是par2对象
+					}
+				},
+				par3:() => {
+							console.log(this.x);
+					},
+				par4:function(){
+					console.log(this.x);
+				}
+			}
+			o.par2.fn();
+			o.par3(); //666，此处箭头函数是在全局环境调用执行，执行上下文是在全局，所以指向window
+			o.par4(); //999，对象中方法的this指向对象
+			
+			//class声明中使用箭头函数时this指向
+			class A {
+				constructor(name, age) {
+					this.name = name
+					this.age = age
+				}
+				
+				printPerson = () => {
+					console.log(this)	// this指向创建的实例
+				}
+			}
+			new A('Justin', 24).printPerson();
+			
+			/**
+			 * 改变this指向
+			 */
+			//1、with改变指向
+			let name = 'Lorde';
+			with(p1){
+				console.log(name); //sica，此处将this指向了实例对象p1
+			}
+			
+			//2、call()改变this指向，call()提供其他参数的方式直接逗号隔开
+			obj.getName(); //本来指向调用它的对象obj
+				// {name: "sica", age: 23, getName: ƒ}
+				// 23
+				// sica
+
+			obj.getName.call(window,2,3); //此时指向了window对象
+				//5
+				// Window {window: Window, self: Window, document: document, name: "The Window", location: Location, …}
+				// undefined
+				// The Window
+				
+			//3、apply()改变this指向，与call()相似，但提供其他参数是用数组表示
+			obj.getName.apply(window,[2,3]);
+			
+			//4、bind()改变this指向，bind()返回的是一个新的函数，与被调用函数函数体相同，你必须调用它才会被执行,传参和call()一致
+			obj.getName.bind(window,2,3)();
 		</script>
 	</body>
 </html>
