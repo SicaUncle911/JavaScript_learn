@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>对象</title>
+		<style>
+			h3{
+				color: #FF0000;
+			}
+		</style>
+	</head>
+	<body>
+		<h2>对象及对象中属性的类型</h2>
+		<ul>
+			<li><h3>数据属性</h3>
+				<ul>
+					<li>configurable：属性是否可配置（修改特性、delete删除、是否改为访问器属性），默认true</li>
+					<li>writable：属性值是否可修改，默认true</li>
+					<li>enumerable：属性是否可用for-in枚举，默认true</li>
+					<li>value：属性实际值，可用于赋属性值，默认undefined</li>
+				</ul>
+			</li>
+			<li><h3>访问器属性</h3>
+				<ul>
+					<li>configurable：属性是否可配置（修改特性、delete删除、是否改为访问器属性），默认true</li>
+					<li>enumerable：属性是否可用for-in枚举，默认true</li>
+					<li>get：获取函数，读取属性调用，默认值undefined</li>
+					<li>set：设置函数，写入属性调用，默认值undefined</li>
+				</ul>
+			</li>
+			<li><h3>对属性操作可用方法</h3>
+				<ul>
+					<li>修改属性特性默认值的方法：Object.defineProperty(对象，属性名，描述符对象)</li>
+					<li>定义多个属性的方法：Object.defineProperties(对象，{属性名：描述符对象}})</li>
+					<li>读取属性特性，返回一个新对象：Object.getOwnPropertyDescriptor(对象，属性名)</li>
+					<li>获取对象所有属性及其特性：Object.getOwnPropertyDescriptors(对象)</li>
+				</ul>
+			</li>
+			<li><h3>合并对象方法</h3>
+				<ul>
+					<li>方法：Object.assign(目标对象，多个源对象)</li>
+					<li>该方法会修改目标对象和最后返回的结果一致</li>
+					<li>对每个源对象执行的是浅复制，也就是只会复制对象的引用</li>
+					<li>会覆盖重复的属性，直到最后一个同名属性</li>
+				</ul>
+			</li>
+			<li><h3>增强对象语法</h3>
+				<ul>
+					<li>属性值简写：属性名和其值的变量名相同时，可就简写为变量名</li>
+					<li>可计算属性：可在对象字面量中使用中括号[]语法来添加属性了</li>
+					<li>简写方法名：对象字面量中放弃函数表达式命名，直接：方法名(参数){}</li>
+				</ul>
+			</li>
+			<li><h3>对象解构</h3>
+				<ul>
+					<li>主要是为了实现一个或多个赋值操作，使用中括号{}</li>
+					<li>{对应属性名：变量名} = 对象，若想变量直接使用属性名则：{对应属性名} = 对象</li>
+					<li>赋值时可忽略某些属性，若引用属性不存在则该变量为undefined</li>
+					<li>给事先声明的变量赋值，则表达式要在()中：({} = 对象)</li>
+					<li>可用于引用含嵌套的属性</li>
+					<li>当赋值出错时，整个解构赋值到这里结束，只完成部分</li>
+					<li>可用于函数参数，不影响arguments对象</li>
+				</ul>
+			</li>
+		</ul>
+		
+		<h2>创建对象</h2>
+		<ul>
+			<li><h3>工厂模式</h3>
+				<ul>
+					<li>可创建多个类似对象</li>
+					<li>问题：未解决对象标识问题，不知道新创建对象类型，都是Object</li>
+				</ul>
+			</li>
+			<li><h3>构造函数模式</h3>
+				<ul>
+					<li>与工厂模式对比没有显式创建对象、属性与方法直接赋给this、没有return</li>
+					<li>创建实例时使用new操作符，会将构造函数原型对象属性赋值给其[[prototype]]属性，将this指向实例对象</li>
+					<li>原型对象有constructor属性指向其对象特定类型</li>
+					<li>构造函数也可做普通函数用</li>
+					<li>问题：其定义的方法会在每个实例上都创建一遍，但这些方法不是同一个function实例却干着一样的事，这是没必要的</li>
+					<li>解决：把方法函数的定义转移到构造函数外部，就不用每次创建新的</li>
+				</ul>
+			</li>
+			<li><h3>原型模式</h3>
+				<ul>
+					<li>会创建prototype属性，该属性是一个对象（原型对象），保存实例的属性、方法，所有实例对象共享</li>
+					<li>创建一个函数其prototype属性指向原型对象，原型对象又用constructor属性指回与之关联的构造函数</li>
+					<li>构造函数和实例对象无直接联系，但实例对象通过[[prototype]]特性指针指向原型对象，与原型对象有直接联系</li>
+					<li>可通过[[prototype]]的实现：__proto__属性访问对象原型，从而会有一个原型链，原型链最终的Object原型的原型是null</li>
+					<li>根据上述可知，同一构造函数创建的实例共享原型对象</li>
+					<li>原型层级：
+						<ul>
+							<li>对象访问属性——>从实例对象上查找属性——>从原型对象上查找</li>
+							<li>可通过实例读取原型对象的值，但不能通过实例重写这些值，在实例中添加一个与原型对象中同名的属性，会在实例中创建该属性遮蔽原型对象的属性</li>
+							<li>确定属性在实例还是原型的方法：实例.hasOwnProperty('属性名')</li>
+						</ul>
+					</li>
+					<li>原型的in操作符：
+						<ul>
+							<li>单独使用时可通过对象访问无论是实例还是原型上的属性，能访问到则返回true</li>
+							<li>几个访问属性的方法：
+								<ol>
+									<li>属性名 in 对象 ---> 不论属性在实例上还是原型上，有就返回true</li>
+									<li>对象.hasOwnProperty(属性) ---> 只有属性在实例上才返回true</li>
+									<li>hasPrototypeProperty(对象,属性名) ---> 只有属性在原型上才返回true</li>
+								</ol>
+							</li>
+							<li>在for-in中使用可获取所有可枚举的属性，包括实例属性和原型属性</li>
+							<li>几个枚举属性的方法：
+								<ol>
+									<li>for(存放属性变量 in 对象) ---> 对象所有可访问枚举的实例属性和原型属性</li>
+									<li>Object.keys(对象) ---> 返回所有可枚举属性数组</li>
+									<li>Object.getOwnPropertyName(对象) ---> 列出所有实例属性数组，无论其是否可枚举</li>
+									<li>Object.getOwnPropertySymbol(对象) ---> 只针对符号为键的属性</li>
+								</ol>
+							</li>
+						</ul>
+					</li>
+					<li>属性枚举顺序是先数值键，再按插入顺序枚举字符串键和符号键</li>
+					<li>问题：弱化了向构造函数传递参数的能力，导致所有实例取得相同的属性值，也因而实现了实例共享原型对象，但这对包含引用值（数组）的属性很不友好</li>
+				</ul>
+			</li>
+			<li><h3>对象迭代</h3>
+				<ul>
+					<li>用于将对象内容转换为可迭代的序列化格式的方法：
+						<ol>
+							<li>Object.values() ---> 返回对象属性值的数组，符号属性会被忽略</li>
+							<li>Object.entries() ---> 返回对象键值对的数组，符号属性会被忽略</li>
+						</ol>
+					</li>
+					<li>
+						原型模式也可使用字面量赋值的方式，更简洁（见script代码的原型模式语法2）；<br>
+						但其存在的问题是会使得原型的constructor属性不再指向特定的对象类型，而是指向Object构造函数；<br>
+						可在字面量赋值中对constructor属性进行赋值指向特定对象类型，但会使得constructor属性从不可枚举变为可枚举；<br>
+						所以最佳解决是使用属性特性修改方法Object.defineProperty()方法来定义constructor属性。
+					</li>
+				</ul>
+			</li>
+		</ul>
+		
+		<script type="text/javascript">
+			/**
+			 * 对象的数据属性及其特性
+			 */
+			//数据属性
+			let person = {
+				name:'sica',
+				age:23
+			};
+			//eg1.是否可修改属性值的特性
+			Object.defineProperty(person, 'name', {
+				writable:false,
+				value:'taylor'
+			});
+			console.log(person.name); //taylor
+			person.name = 'lorde';
+			console.log(person.name); //taylor
+			
+			//eg2.是否可枚举属性的特性
+			Object.defineProperty(person, 'age', {
+				enumerable:false,
+				value:28
+			});
+			for(const propName in person){
+				console.log(propName); //name
+			}
+			console.log(Object.keys(person)) //["name"]
+			
+			//eg3.是否可配置属性的特性
+			Object.defineProperty(person, 'name', {
+				configurable:false,
+				value:'avril'
+			});
+			// Object.defineProperty(person, 'name', {
+			// 	configurable:false,
+			// 	value:'bilie'
+			// }); //报错
+			console.log(person.name); //avril
+			
+			//访问器属性
+			let book = {
+				year_:2019, //数据属性
+				edition:1
+			};
+			Object.defineProperty(book, 'year', { //此处的year不是year_，而是一个访问器属性
+				get(){
+					return this.year_;
+				},
+				set(newValue){
+					if(newValue > 2019){
+						this.year_ = newValue;
+						this.edition += newValue - 2019;
+					}
+				}
+			});
+			book.year = 2021;
+			console.log(book.year_); //2021
+			console.log(book.edition); //3
+			
+			//定义多属性
+			let customer = {};
+			Object.defineProperties(customer, {
+				age_:{
+					value:20
+				},
+				age:{
+					get(){
+						return this.age_;
+					},
+					set(newAge){
+						this.age_ = newAge;
+					}
+				}
+			})
+			
+			//读取属性特性
+			let desc = Object.getOwnPropertyDescriptor(book,'year_');
+			console.log(desc);
+			
+			/**
+			 * 合并对象
+			 */
+			//简单复制，浅复制
+			let obj = {a:666};
+			let result = Object.assign(obj,{a:233},{b:555});
+			console.log(obj); //{a: 233, b: 555}
+			console.log(result); //{a: 233, b: 555},会覆盖同名属性的值
+			obj.a = 555;
+			console.log(result); //{a: 555, b: 555},证明是浅复制
+			
+			/**
+			 * 增强对象语法
+			 */
+			//属性值简写
+			let name = 'sica';
+			let ss = {
+				name
+			};
+			console.log(ss.name); //sica
+			
+			//可计算属性字面量动态属性赋值
+			const aKey = 'a';
+			const bKey = 'b';
+			let num = 0;
+			function getNumKey(key){
+				return key + '_' + num++
+			}
+			let oo = {
+				[getNumKey(aKey)]:'is a',
+				[getNumKey(bKey)]:'is b'
+			};
+			console.log(oo); //{a_0: "is a", b_1: "is b"}
+			
+			//简写对象方法名
+			let role = {
+				name_:'',
+				get name(){
+					return this.name_;
+				},
+				set name(name){
+					this.name_ = name;
+				},
+				sayName(){
+					console.log('Im a actor,' + this.name_);
+				}
+			};
+			role.name = 'jack';
+			role.sayName();
+			
+			/**
+			 * 对象解构赋值
+			 */
+			let newPerson = {
+				newName:'nick',
+				newAge:30
+			}
+			let {newName:personName,newAge:personAge} = newPerson;
+			console.log(personName); //nick
+			console.log(personAge); //30
+			
+			//变量直接使用属性名
+			let {newName,newAge,newJob,newHobby = 'sing'} = newPerson;
+			console.log(newName); //nick
+			console.log(newAge); //30
+			console.log(newJob); //undefined,引用属性不存在则值为undefined
+			console.log(newHobby); //sing,可给不存在引用属性赋默认值
+			
+			//嵌套解构
+			let t1 = {
+				tname:'tia',
+				tjob:{
+					content:'none'
+				}
+			}
+			
+			let t1Copy = {};
+			({tname:t1Copy.name,tjob:t1Copy.job} = t1);
+			console.log(t1Copy);
+			
+			//部分解构
+			let t2 = {
+				tname:'tanya',
+				tjob:{
+					content:'none'
+				}
+			}
+			
+			let t2Nmae,t2Job,t2Bar;
+			try{
+				({tname:t2Nmae,foo:{bar:t2Bar},tjob:t2Job} = t2);
+			}catch(e){}
+			
+			console.log(t2Nmae,t2Job,t2Bar); //tanya undefined undefined
+			
+			//参数上下文
+			let t3 = {
+				tname:'tt',
+				tage:22
+			};
+			function printt3(id,{tname,tage}){
+				console.log(arguments);
+				console.log(tname,tage);
+			}
+			printt3('001',t3);
+			
+			/**
+			 * 创建对象
+			 */
+			/*工厂模式*/
+			function createPerson(name,age,sex){
+				let o = new Object();
+				o.name = name;
+				o.age = age;
+				o.sex = sex;
+				o.sayName = function(){
+					console.log(this.name);
+				};
+				return o;
+			}
+			let person1 = createPerson('Katy',28,'female');
+			person1.sayName(); //Katy
+			console.log(person1);
+			
+			/*构造函数模式*/
+			function Person(name,age,sex){
+				this.name = name;
+				this.age = age;
+				this.sex = sex;
+				this.sayName = function(){
+					console.log(this.name);
+				};
+			}
+			let person2 = new Person('Doja',23,'female');
+			person1.sayName(); //Doja
+			console.log(person2);
+			
+			/*原型模式*/
+			function Person_(){}
+			//原型链终止于Object原型对象，Object原型的原型是null
+			console.log(Person_.prototype); //{constructor: ƒ}
+			console.log(Person_.prototype.__proto__ === Object.prototype); //true
+			console.log(Person_.prototype.__proto__.constructor === Object); //true
+			console.log(Person_.prototype.__proto__.__proto__ === null); //true
+			
+			//语法1
+			// Person_.prototype.name = 'Ariana';
+			// Person_.prototype.age = '24';
+			// Person_.prototype.sex = 'female';
+			// Person_.prototype.sayName = function(){
+			// 	console.log(this.name);
+			// }
+			
+			//语法2
+			Person_.prototype= { //这种写法原型对象的constructor属性就不会指向Person_了，而是指向Object构造函数
+				// constructor:Person_,//除非专门这样设置一下才指向构造函数，但这样constructor就会编程可枚举属性
+				name:'Ariana',
+				age:24,
+				sex:'female',
+				sayName(){
+					console.log(this.name);
+				}
+			}
+			//为了设置construtor属性指向以及让其不可枚举，所以要修改一下属性特性：
+			Object.defineProperty(Person_.prototype, 'constructor',{
+				enumerable:false,
+				value:Person_
+			});
+			
+			let person3 = new Person_();
+			let person4 = new Person_();
+			
+			person3.sayName(); //Ariana
+			console.log(person3.age); //24
+			
+			//根据原型层级，也是实例上先查找属性，若找不到才到原型对象中查找，此处创建了person3实例的name属性
+			//因此查找name属性时这里在实例中就找到了，而person4是去原型对象找到的
+			person3.name = 'Nick';
+			console.log(person3.name); //Nick ，实例添加与原型对象同名的属性，实例上创建该属性会遮住原型对象的该属性，但不改变原型对象的该属性
+			console.log(person4.name); //Ariana ，因为实例共享一个原型对象，更改了原型对象属性还得了！
+			console.log(person3.hasOwnProperty('name')); //true
+			
+			//使用delete操作符可删除该属性
+			delete person3.name;
+			console.log(person3.name); //Ariana
+			
+			//判断属性是在实例对象还是原型对象上,在实例上返回true
+			console.log(person3.hasOwnProperty('name')); //false
+			
+			//通过对象访问指定的无论是在实例还是原型对象的属性
+			console.log('name' in person3); //true
+			console.log('country' in person3); //false
+			
+			//枚举属性
+			console.log(Object.keys(Person_.prototype)); //返回所有可枚举属性数组
+			console.log(Object.getOwnPropertyNames(person3)); //只返回实例属性，这里没有实例属性，返回空数组
+			
+			/**
+			 * 对象迭代
+			 */
+			//对象内容转化为可迭代格式
+			const ooc = {
+				foo:'bar',
+				baz:1
+			}
+			console.log(Object.values(ooc)); //返回属性值数组
+			console.log(Object.entries(ooc)); //返回键值对数组
+		</script>
+	</body>
+</html>
