@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>继承</title>
+		<style>
+			h3{
+				color: #FF0000;
+			}
+		</style>
+	</head>
+	<body>
+		<h2>继承</h2>
+		<ul>
+			<li><h3>原型链</h3>
+				<ul>
+					<li>思想：通过原型继承多个引用类型的属性和方法</li>
+					<li>原型链扩展了属性、方法的搜索机制</li>
+					<li>原型链的默认原型是Object.prototype，因此所有引用类型都继承自Object</li>
+					<li>原型和实例的关系可通过两种方式确定：
+						<ol>
+							<li>实例 instanceof 构造函数类型</li>
+							<li>原型.isPrototypeOf(实例) --> 给原型链的每个原型调用，若实例中有该原型则返回true</li>
+						</ol>
+					</li>
+					<li>子类重写、覆盖父类的方法或增加父类没有的方法必须等原型赋值后再添加到原型</li>
+					<li>缺点：
+					<ol>
+						<li>跟原型模式一样都是包含引用值的问题，实例间共享引用值，在使用原型继承时，原型会变为另一个原型的实例，会创建其跟继承实例和原型一样的属性，而这些属性会被该原型的实例又拿去共享。总结就是本不该共享的属性拿来共享了。</li>
+						<li>子类型实例化时不能给父类型构造函数传参。</li>
+					</ol>
+					
+					</li>
+				</ul>
+			</li>
+			<li><h3>盗用构造函数（对象伪装/经典继承）：为解决原型包含引用值导致的继承问题</h3>
+				<ul>
+					<li>思想：在子类构造函数中调用父类构造函数</li>
+					<li>以call()、apply()方法指定新创建实例对象为上下文去执行要继承的构造函数</li>
+					<li>结果：每个实例都会有继承过来的属性，但该属性不是共享的，因为是在每次创建实例时又调用了一次父类的创建实例，每个父类创建实例也是不同的。</li>
+					<li>缺点：必须在构造函数中定义方法，因此函数不可重用；子类不能访问父类原型定义的方法，因此所有类型只能使用构造函数模式</li>
+				</ul>
+			</li>
+			<li><h3>组合继承（伪经典继承） = 原型链 + 盗用构造函数，最常用</h3>
+				<ul>
+					<li>综合了盗用构造函数和原型链的优点，解决了包含引用值实例属性被共享，子类不能给父类构造函数传参的问题</li>
+					<li>思想：使用原型链继承原型的属性方法，使用盗用构造函数继承实例属性</li>
+					<li>保留了instanceof、isPrototypeOf()方法</li>
+					<li>缺点：存在效率问题，父类构造函数会被调用两次，一次在子类构造函数中，会创建实例属性；一次在子类原型继承父类实例对象，会创建原型属性。实例属性会遮蔽原型属性。</li>
+				</ul>
+			</li>
+			<li><h3>原型式继承</h3>
+				<ul>
+					<li>思想：在函数中创建一个临时构造函数，将函数参数对象赋值给临时构造函数的原型，然后返回这个临时构造函数的实例</li>
+					<li>本质是对传入的参数对象进行了一次浅复制。适用于想在一个对象的基础上再创建一个新对象</li>
+					<li>实现：Object.create(作为新对象原型的对象,为新对象定义额外属性的对象(可选))</li>
+					<li>适用于不需要单独创建构造函数，但需要对象间共享属性信息的场合</li>
+					<li>缺点：属性中包含的引用值会共享，跟原型模式一样</li>
+				</ul>
+			</li>
+			<li><h3>寄生式继承</h3>
+				<ul>
+					<li>思想：类似与工厂模式，创建实现继承的函数创建对象，增强对象（添加方法），返回这个对象</li>
+					<li>适用于关注对象，不在乎对象类型和构造函数的场景，因为这里更趋近于工厂模式</li>
+					<li>缺点：给对象添加方法会导致方法难以重用，与构造函数模式类似</li>
+				</ul>
+			</li>
+			<li><h3>寄生式组合继承 = 寄生式继承 + 盗用构造函数，为解决组合继承两次调用父类构造函数</h3>
+				<ul>
+					<li>思路：还是通过盗用构造属性继承实例属性，但不使用父类构造函数给子类原型赋值，而是取得父类原型副本，也就是使用寄生式继承不使用构造函数</li>
+					<li>保留了instanceof、isPrototypeOf()方法</li>
+					<li>引用类型继承的最佳模式</li>
+				</ul>
+			</li>
+		</ul>
+		
+		<script type="text/javascript">
+			/**
+			 * 原型链
+			 */
+			function TopType(){
+				this.property = true;
+			} //构造函数
+			
+			TopType.prototype.getTopValue = function(){
+				return this.property;
+			};
+			console.log(TopType.prototype.getTopValue()); //undefined
+			
+			function BottomType(){
+				this.botproperty = false;
+			};
+			//继承TopType
+			BottomType.prototype = new TopType(); //实例中的property是true
+			
+			console.log(BottomType.prototype.getTopValue()); //true
+			BottomType.prototype.getBotValue = function(){
+				return this.botproperty; 
+			}
+			
+			// BottomType.prototype.getTopValue = function(){
+			// 	return false; 
+			// } //覆盖已有方法，最终intance调用getTopValue返回false
+			
+			console.log(BottomType.prototype.getBotValue()); //undefined
+			let instance = new BottomType();
+			console.log(instance.getTopValue()); //true
+			
+			//原型与实例关系的确定
+			console.log(instance instanceof TopType); //true
+			console.log(instance instanceof BottomType); //true
+			console.log(instance instanceof Object); //true
+			
+			console.log(TopType.prototype.isPrototypeOf(instance)); //true
+			console.log(BottomType.prototype.isPrototypeOf(instance)); //true
+			console.log(Object.prototype.isPrototypeOf(instance)); //true
+			
+			/**
+			 * 为解决原型包含引用值被继承而共享的问题，出现了盗用构造函数的技术
+			 */
+			//盗用构造函数
+			function Super(){
+				this.color = ['red','yellow','blue'];
+			}
+			
+			function Sub(){
+				//继承Super，在Super执行时会把color属性的this绑定到创建的Sub实例对象，这样每个实例都有color属性了
+				Super.call(this);
+			}
+			
+			let ins1 = new Sub();
+			ins1.color.push('green');
+			console.log(ins1.color); //red,yellow,blue,green
+			
+			let ins2 = new Sub();
+			console.log(ins2.color); //red,yellow,blue
+			
+			//盗用构造函数传参，解决了子类不能给父类传参问题
+			function Super1(name){
+				this.name = name;
+			}
+			
+			function Sub1(){
+				//继承Super并传参，这个传参归功于call()
+				Super1.call(this,'Lisa');
+				this.age = 24; //实例属性
+			}
+			let inst = new Sub1();
+			console.log(inst.name); //Lisa
+			console.log(inst.age); //24
+			
+			/**
+			 * 组合继承：盗用构造函数+原型链
+			 */
+			function Super2(name){
+				this.name = name;
+				this.color = ['red','blue'];
+			}
+			
+			Super2.prototype.sayName = function(){
+				console.log(this.name);
+			}
+			
+			function Sub2(name,age){
+				Super2.call(this,name); //盗用构造函数，给每个实例创建不同继承属性，且传参name
+				this.age = age;
+			}
+			
+			Sub2.prototype = new Super2(); //原型链继承属性和方法
+			
+			//添加父类没有的方法要等原型赋值后操作
+			Sub2.prototype.sayAge = function(){
+				console.log(this.age);
+			}
+
+			let instance1 = new Sub2('Avril',30);
+			instance1.color.push('yellow');
+			console.log(instance1.color); //red,blue,yellow
+			instance1.sayName(); //Avril
+			instance1.sayAge(); //30
+			
+			let instance2 = new Sub2('Taylor',28);
+			console.log(instance2.color); //red,blue
+			instance2.sayName(); //Taylor
+			instance2.sayAge(); //28
+			
+			/**
+			 * 原型式继承
+			 */
+			let person = {
+				name:'Sica',
+				friends:['Taylor','Avril']
+			};
+			
+			function object(o){
+				function F(){};
+				F.prototype = o;
+				return new F();
+			}
+			
+			let newPerson1 = object(person); //方式1
+			newPerson1.name = 'Nick';
+			newPerson1.friends.push('Ariana');
+			
+			let newPerson2 = Object.create(person,{ //方式2，更简化更规范
+				name:{
+					value:'Katy' //此参数和Object.defineProperties()的第二个参数一样
+				}
+			});
+			newPerson2.friends.push('Nick');
+			
+			console.log(person.friends); //["Taylor", "Avril", "Ariana", "Nick"]
+			
+			/**
+			 * 寄生式继承
+			 */
+			function createNew(o){
+				let clone = object(o); //创建一个新对象，只要是创建新对象的函数都行
+				clone.sayHi = function(){ //增强对象，给对象添加方法从而增强对象
+					console.log('Hi');
+				};
+				return clone;
+			}
+			let newPerson3 = createNew(person);
+			newPerson3.sayHi(); //Hi
+			
+			/**
+			 * 寄生式组合继承：盗用构造函数+寄生式继承
+			 */
+			function inheritPrototype(Sub,Super){
+				let prototype = object(Super.prototype); //创建父类原型的副本
+				prototype.constructor = Sub; //增强对象，解决重写原型导致construtor丢失的问题
+				Sub.prototype = prototype; //赋值父类原型副本
+			}
+			
+			function Super3(name){
+				this.name = name;
+				this.color = ['red','blue'];
+			}
+			
+			Super3.prototype.sayName = function(){
+				console.log(this.name);
+			}
+			
+			function Sub3(name,age){
+				Super3.call(this,name); //盗用构造函数，给每个实例创建不同继承属性，且传参name
+				this.age = age;
+			}
+			
+			inheritPrototype(Sub3,Super3);
+			Sub3.prototype.sayAge = function(){
+				console.log(this.age);
+			}
+			
+			let instance3 = new Sub3('Jessie',30);
+			instance3.color.push('orange');
+			console.log(instance3.color); //red,blue,orange
+			instance3.sayName(); //Jessie
+			instance3.sayAge(); //30
+		</script>
+	</body>
+</html>
